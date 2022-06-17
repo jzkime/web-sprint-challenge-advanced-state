@@ -34,6 +34,7 @@ export function resetForm() {
 
 // ❗ Async action creators
 export function fetchQuiz() {
+  setMessage('')
   return function (dispatch) {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
@@ -52,7 +53,9 @@ export function postAnswer(quizId, ansId) {
     // - Dispatch the fetching of the next quiz
     axios.post(`${URL}/answer`, { "quiz_id": quizId, "answer_id": ansId } )
       .then(res => {
-        dispatch({type: types.SET_INFO_MESSAGE, payload: res.data.message === "Nice job! That was the correct answer" ? "That was the correct answer" : "That was the incorrect answer"});
+        const ans = res.data.message === "Nice job! That was the correct answer" ? "That was the correct answer" : "That was the incorrect answer"
+        dispatch({type: types.SET_INFO_MESSAGE, payload: ans});
+      dispatch(fetchQuiz())
       }).catch(err => console.error(err))
   }
   
@@ -63,7 +66,7 @@ export function postQuiz(newQ) {
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
     axios.post(`${URL}/new`, newQ)
-      .then(res => {
+      .then(() => {
       })
       .catch(err => console.error(err))
   }

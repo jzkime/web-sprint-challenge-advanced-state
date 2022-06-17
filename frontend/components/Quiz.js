@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { setQuiz, postAnswer, fetchQuiz, selectAnswer } from '../state/action-creators'
+import { setQuiz, postAnswer, fetchQuiz, selectAnswer, setMessage } from '../state/action-creators'
 
 function Quiz(props) {
   const { quiz } = props
   useEffect(() => {
-    if(!Object.keys(quiz).length) {
-      props.setQuiz()
-        }
+    if(!Object.keys(quiz).length)props.setQuiz()
   }, [])
 
   const handleSelected = (id) => {
     props.selectedAnswer !== id && props.selectAnswer(id);
   }
 
-  const handleNewQuiz = (qId) => {
-    props.postAnswer(qId, props.selectedAnswer)
-    props.fetchQuiz()
+  const handleNewQuiz = () => {
+    props.postAnswer(quiz.quiz_id, props.selectedAnswer)
   }
-  console.log(props.selectedAnswer)
 
   return (
     <div id="wrapper">
@@ -39,7 +35,7 @@ function Quiz(props) {
               })}
             </div>
 
-            <button id="submitAnswerBtn" className={`button`} disabled={!props.selectedAnswer} onClick={() => handleNewQuiz(quiz.quiz_id)} >Submit answer</button>
+            <button id="submitAnswerBtn" className={`button`} disabled={!props.selectedAnswer} onClick={handleNewQuiz} >Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -47,4 +43,4 @@ function Quiz(props) {
   )
 }
 
-export default connect(st => st, { setQuiz, postAnswer, fetchQuiz, selectAnswer })(Quiz);
+export default connect(st => st, { setQuiz, postAnswer, fetchQuiz, selectAnswer, setMessage })(Quiz);
