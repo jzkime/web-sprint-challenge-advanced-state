@@ -4,9 +4,8 @@ import { moveClockwise, moveCounterClockwise } from '../state/action-creators'
 
 function Wheel(props) {
   const { wheel, moveClockwise, moveCounterClockwise } = props
-  const wh = wheel.wheel
   const isIt = (num, doThis) => {
-    if(wh === num) {
+    if(wheel === num) {
       return doThis === "a" ? "active" : "B"
     }
   }

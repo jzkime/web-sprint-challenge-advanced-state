@@ -6,7 +6,9 @@ function Quiz(props) {
   const { quiz } = props
   const [ selected, setSelected ] = useState('')
   useEffect(() => {
-    props.setQuiz()
+    if(!Object.keys(quiz).length) {
+      props.setQuiz()
+        }
   }, [])
 
   const handleSelected = (id) => {
