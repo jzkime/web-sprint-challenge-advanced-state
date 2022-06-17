@@ -8,7 +8,7 @@ function wheel(state = initialWheelState, action) {
     case types.MOVE_CLOCKWISE:
       return ( state !== 5 ? state + 1 : 0)
     case types.MOVE_COUNTERCLOCKWISE:
-      return(state ? state - 1 : 5);
+      return (state ? state - 1 : 5);
     default: 
       return state;
   }
@@ -18,7 +18,7 @@ const initialQuizState = []
 function quiz(state = initialQuizState, action) {
   switch(action.type) {
     case types.SET_QUIZ_INTO_STATE:
-      return ({...action.payload});
+      return action.payload;
     default:
       return state
   }
@@ -28,7 +28,7 @@ const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch(action.type) {
     case types.SET_SELECTED_ANSWER:
-      return (action.payload)
+      return action.payload
     default: 
       return state
   }

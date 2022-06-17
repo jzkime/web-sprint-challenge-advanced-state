@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
-import formSchema from '../schema/formSchema'
 
 export function Form(props) {
   const [ disabled, setDisabled ] = useState(true)
@@ -18,8 +17,6 @@ export function Form(props) {
       "false_answer_text": props.form.newFalseAnswer
     }
     props.postQuiz(form)
-    props.setMessage(`Congrats: "${props.form.newQuestion}" is a great question!`);
-    props.resetForm()
   }
 
   useEffect(() => {
@@ -32,7 +29,6 @@ export function Form(props) {
     }
   }, [props.form])
 
-  console.log(props.form)
   return (
     <form id="form" onSubmit={onSubmit}>
       <h2>Create New Quiz</h2>

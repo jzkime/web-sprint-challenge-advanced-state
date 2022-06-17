@@ -55,7 +55,7 @@ export function postAnswer(quizId, ansId) {
       .then(res => {
         const ans = res.data.message === "Nice job! That was the correct answer" ? "That was the correct answer" : "That was the incorrect answer"
         dispatch({type: types.SET_INFO_MESSAGE, payload: ans});
-      dispatch(fetchQuiz())
+        dispatch(fetchQuiz())
       }).catch(err => console.error(err))
   }
   
@@ -67,6 +67,8 @@ export function postQuiz(newQ) {
     // - Dispatch the resetting of the form
     axios.post(`${URL}/new`, newQ)
       .then(() => {
+        dispatch(setMessage(`Congrats: "${newQ.question_text}" is a great question!`));
+        dispatch(resetForm())
       })
       .catch(err => console.error(err))
   }
