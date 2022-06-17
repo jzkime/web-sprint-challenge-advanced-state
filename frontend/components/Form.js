@@ -4,7 +4,7 @@ import * as actionCreators from '../state/action-creators'
 import formSchema from '../schema/formSchema'
 
 export function Form(props) {
-  const [ disabled, setDisabled ] = useState(false)
+  const [ disabled, setDisabled ] = useState(true)
   const onChange = evt => {
     props.inputChange(evt.target.id, evt.target.value)
   }
@@ -18,11 +18,18 @@ export function Form(props) {
       "false_answer_text": props.form.newFalseAnswer
     }
     props.postQuiz(form)
-    props.setMessage(`Congrats: "${props.form.newQuestion}" is a great question!`)
+    props.setMessage(`Congrats: "${props.form.newQuestion}" is a great question!`);
+    props.resetForm()
   }
 
   useEffect(() => {
-    formSchema.isValid(props.form).then(valid => setDisabled(!valid) )
+    if(props.form.newQuestion.trim().length > 0 
+    && props.form.newTrueAnswer.trim().length > 0 
+    && props.form.newFalseAnswer.trim().length > 0) {
+      setDisabled(false);
+    } else {
+      setDisabled(true)
+    }
   }, [props.form])
 
   console.log(props.form)

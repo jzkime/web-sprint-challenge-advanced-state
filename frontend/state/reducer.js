@@ -26,14 +26,17 @@ function quiz(state = initialQuizState, action) {
 
 const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
-  return state
+  switch(action.type) {
+    case types.SET_SELECTED_ANSWER:
+      return (action.payload)
+    default: 
+      return state
+  }
 }
 
 const initialMessageState = ''
 function infoMessage(state = initialMessageState, action) {
   switch(action.type) {
-    case types.SET_SELECTED_ANSWER:
-      return action.payload;
     case types.SET_INFO_MESSAGE: 
       return action.payload;
     default:

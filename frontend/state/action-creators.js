@@ -13,7 +13,7 @@ export function moveCounterClockwise() {
 }
 
 export function selectAnswer(id) {
-  return 
+  return ({type: types.SET_SELECTED_ANSWER, payload: id})
 }
 
 export function setMessage(mes) {
@@ -30,7 +30,6 @@ export function inputChange(name, value) {
 
 export function resetForm() { 
   return ({type: types.RESET_FORM})
-
 }
 
 // ❗ Async action creators
@@ -53,7 +52,7 @@ export function postAnswer(quizId, ansId) {
     // - Dispatch the fetching of the next quiz
     axios.post(`${URL}/answer`, { "quiz_id": quizId, "answer_id": ansId } )
       .then(res => {
-        dispatch({type: types.SET_SELECTED_ANSWER, payload: res.data.message});
+        dispatch({type: types.SET_INFO_MESSAGE, payload: res.data.message === "Nice job! That was the correct answer" ? "That was the correct answer" : "That was the incorrect answer"});
       }).catch(err => console.error(err))
   }
   
@@ -65,8 +64,6 @@ export function postQuiz(newQ) {
     // - Dispatch the resetting of the form
     axios.post(`${URL}/new`, newQ)
       .then(res => {
-        console.log(res)
-        dispatch(resetForm())
       })
       .catch(err => console.error(err))
   }

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { setQuiz, postAnswer, fetchQuiz } from '../state/action-creators'
+import { setQuiz, postAnswer, fetchQuiz, selectAnswer } from '../state/action-creators'
 
 function Quiz(props) {
   const { quiz } = props
-  const [ selected, setSelected ] = useState('')
   useEffect(() => {
     if(!Object.keys(quiz).length) {
       props.setQuiz()
@@ -12,13 +11,14 @@ function Quiz(props) {
   }, [])
 
   const handleSelected = (id) => {
-    selected !== id && setSelected(id);
+    props.selectedAnswer !== id && props.selectAnswer(id);
   }
 
-  const handleNewQuiz = (qId, aId) => {
-    props.postAnswer(qId, aId)
+  const handleNewQuiz = (qId) => {
+    props.postAnswer(qId, props.selectedAnswer)
     props.fetchQuiz()
   }
+  console.log(props.selectedAnswer)
 
   return (
     <div id="wrapper">
@@ -30,16 +30,16 @@ function Quiz(props) {
 
             <div id="quizAnswers">
               {quiz.answers && quiz.answers.map(a => {
-                return <div className={`answer ${a.answer_id === selected && 'selected'}`} key={a.answer_id}>
+                return <div className={`answer ${a.answer_id === props.selectedAnswer && 'selected'}`} key={a.answer_id}>
                 {a.text}
-                <button onClick={() => handleSelected (a.answer_id)}>
-                  {a.answer_id === selected ? 'SELECTED' : 'select'}
+                <button onClick={() => handleSelected(a.answer_id)}>
+                  {a.answer_id === props.selectedAnswer ? 'SELECTED' : 'select'}
                 </button>
               </div>
               })}
             </div>
 
-            <button id="submitAnswerBtn" className={`button`} disabled={!(selected).toString()} onClick={() => handleNewQuiz(quiz.quiz_id, selected)} >Submit answer</button>
+            <button id="submitAnswerBtn" className={`button`} disabled={!props.selectedAnswer} onClick={() => handleNewQuiz(quiz.quiz_id)} >Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -47,4 +47,4 @@ function Quiz(props) {
   )
 }
 
-export default connect(st => st, { setQuiz, postAnswer, fetchQuiz })(Quiz);
+export default connect(st => st, { setQuiz, postAnswer, fetchQuiz, selectAnswer })(Quiz);
